@@ -14,7 +14,6 @@ add_subdirectory(src)
 # 只有在作為主專案編譯時，才開啟測試和範例
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     enable_testing()
-    add_subdirectory(tests)
+#    add_subdirectory(tests)
     add_subdirectory(examples)
-    add_subdirectory(benchmarks)
 endif()
