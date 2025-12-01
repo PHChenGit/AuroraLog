@@ -4,11 +4,20 @@
 #include <string>
 #include <memory>
 
-#include "LogLevel.h"
-#include "AuroraLog/LogLevel.h"
-
 namespace AuroraLog {
     class Logger;
+
+    enum class LogLevel {
+        UNKNOWN = 0,
+        DEBUG,
+        INFO,
+        WARN,
+        ERROR,
+        FATAL
+    };
+
+    // 輔助函式：將 Level 轉為字串 (給 LogFormatter 用)
+    const char* LogLevelToString(LogLevel level);
 
     class LogEvent {
     public:
