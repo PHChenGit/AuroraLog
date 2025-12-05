@@ -1,0 +1,2 @@
+add_executable(config_usage config_usage.cpp)
+target_link_libraries(config_usage PRIVATE AuroraLog)

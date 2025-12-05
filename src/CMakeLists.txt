@@ -1,7 +1,10 @@
 file(GLOB_RECURSE SOURCES "*.cpp")
 
 add_library(AuroraLog SHARED ${SOURCES}
-        ../examples/basic_usage.cpp)
+        ../examples/basic_usage/basic_usage.cpp
+        ../examples/config_usage/config_usage.cpp
+        ../include/AuroraLog/LogFormatter.h
+        LogFormatter.cpp)
 
 target_include_directories(AuroraLog
         PUBLIC

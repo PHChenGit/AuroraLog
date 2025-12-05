@@ -1,3 +1,2 @@
-
-add_executable(basic_usage basic_usage.cpp)
-target_link_libraries(basic_usage PRIVATE AuroraLog)
+add_subdirectory(basic_usage)
+add_subdirectory(config_usage)

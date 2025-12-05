@@ -1,6 +1,14 @@
 cmake_minimum_required(VERSION 3.25)
 project(AuroraLog VERSION 1.0.0 LANGUAGES CXX)
 
+include(FetchContent)
+FetchContent_Declare(
+    yaml-cpp
+    GIT_REPOSITORY https://github.com/jbeder/yaml-cpp.git
+    GIT_TAG        0.8.0
+)
+FetchContent_MakeAvailable(yaml-cpp)
+
 # 設定 C++ 標準
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -10,6 +18,8 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 # 加入子目錄
 add_subdirectory(src)
+
+target_link_libraries(AuroraLog PUBLIC yaml-cpp::yaml-cpp)
 
 # 只有在作為主專案編譯時，才開啟測試和範例
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
