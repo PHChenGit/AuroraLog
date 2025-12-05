@@ -1,0 +1,18 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Clang++ - Build and Debug Active File",
+            "type": "cppdbg",            // 使用 C++ 除錯器
+            "request": "launch",         // 請求類型：啟動新程式
+            "program": "${fileDirname}/${fileBasenameNoExtension}", // 要除錯的執行檔路徑
+            "args": [],                  // 傳遞給程式的參數 (argv)
+            "stopAtEntry": false,        // 是否在 main 函數的第一行暫停
+            "cwd": "${fileDirname}",     // 程式的工作目錄
+            "environment": [],
+            "externalConsole": false,    // 是否開啟外部終端機視窗
+            "MIMode": "lldb",            // 指定使用 lldb 除錯器
+            "preLaunchTask": "Clang 17: Build Active File" // 重要：除錯前先執行的 Task
+        }
+    ]
+}

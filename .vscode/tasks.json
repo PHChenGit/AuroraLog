@@ -1,0 +1,48 @@
+{
+    "version": "2.0.0",
+    "inputs": [
+        {
+            "id": "cmakeTarget",
+            "type": "pickString",
+            "description": "選擇要編譯的目標 (Target)",
+            "options": [
+                "all",
+                "basic_usage",
+                "AuroraLog"
+            ],
+            "default": "all"
+        }
+    ],
+    "tasks": [
+        {
+            "label": "CMake: Build Selected Target",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "${workspaceFolder}/build",
+                "--config", "Debug",
+                "--target", "${input:cmakeTarget}", 
+                "-j", "4"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": "$gcc",
+            "detail": "選擇性編譯特定目標",
+            "dependsOn": "CMake: Configure"
+        },
+        {
+            "label": "CMake: Configure",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "-S", ".",
+                "-B", "build",
+                "-DCMAKE_CXX_COMPILER=clang++",
+                "-DCMAKE_CXX_STANDARD=17"
+            ]
+        }
+    ]
+}

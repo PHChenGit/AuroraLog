@@ -1,0 +1,17 @@
+{
+  "name": "Cpp base podman container",
+  "image": "localhost/cppbase:latest",
+
+  // [關鍵 1] 讓容器內的使用者 ID 對應正確，避免權限問題
+  "runArgs": [
+    "--userns=keep-id"
+  ],
+
+  // [關鍵 2] 指定容器內的使用者 (通常 base image 都有 vscode 這個 user)
+  "containerUser": "vscode",
+  
+  // [選用] 如果你需要將某些環境變數傳進去
+  "remoteEnv": {
+    "PATH": "${containerEnv:PATH}:/home/vscode/.local/bin"
+  }
+}
