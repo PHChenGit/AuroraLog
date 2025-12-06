@@ -12,6 +12,7 @@ FetchContent_MakeAvailable(yaml-cpp)
 # 設定 C++ 標準
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # 支援資料夾分層 (IDE 顯示用)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)

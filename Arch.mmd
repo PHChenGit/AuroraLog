@@ -1,0 +1,27 @@
+graph LR
+    UserApp[User Application] --> |Calls API| Logger
+    Logger --> |Creates| LogEvent
+    Logger --> |Passes Event| SinkManager
+    SinkManager --> |Dispatch| ConsoleSink
+    SinkManager --> |Dispatch| FileSink
+    
+    subgraph "Core Library"
+        Logger
+        LogEvent
+    end
+
+    subgraph "Formatters"
+        TextFormatter
+        JsonFormatter
+    end
+
+    subgraph "Sinks (Outputs)"
+        ConsoleSink
+        FileSink
+    end
+
+    ConsoleSink --> |Uses| TextFormatter
+    FileSink --> |Uses| JsonFormatter
+    FileSink --> |Uses| TextFormatter
+    
+    FileSink --> |Trigger| RollingStrategy

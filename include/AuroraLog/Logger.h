@@ -1,39 +1,42 @@
 #ifndef AURORALOG_LOGGER_H
 #define AURORALOG_LOGGER_H
 
+#include <list>
 #include <memory>
+#include <mutex>
 #include <string>
 #include <vector>
-#include <list>
+
 #include "AuroraLog/LogEvent.h"
 #include "AuroraLog/Sink.h"
-#include "AuroraLog/LogLevel.h"
+#include "AuroraLog/ConfigLoader.h"
 
 namespace AuroraLog {
-    class Logger {
-    public:
-        using Ptr = std::shared_ptr<Logger>;
+class Logger {
+public:
+    using Ptr = std::shared_ptr<Logger>;
 
-        Logger(const std::string& name = "root");
+    Logger();
+    Logger(LogConfig config);
 
-        void log(const LogEvent::Ptr& event);
+    void loadConfig(const std::string& configFilePath);
+    static Logger& getInstance();
 
-        // 管理 Sinks (可以同時有多個輸出地)
-        void addSink(const LogSink::Ptr& sink);
-        void clearSinks();
+    void log(const LogEvent& event);
+    void debug(const std::string& msg);
+    void info(const std::string& msg);
+    void warn(const std::string& msg);
+    void error(const std::string& msg);
+    void fatal(const std::string& msg);
 
-        // 取得/設定 全域等級
-        LogLevel getLevel() const { return m_level; }
-        void setLevel(const LogLevel& level) { m_level = level; }
+private:
+    std::mutex m_logger_mutex;
+    LogConfig m_config;
+    SinkManager m_sink_manager;
 
-        const std::string& getName() const { return m_name; }
+    void notifyListeners(const LogEvent::Ptr& event);
+};
 
-    private:
-        std::string m_name;                      // Logger 名稱 (便於區分模組)
-        LogLevel m_level = LogLevel::DEBUG;      // 低於此等級的 Log 直接忽略
-        std::vector<LogSink::Ptr> m_sinks;       // 輸出目的地列表
-    };
+}  // namespace AuroraLog
 
-} // namespace Aurora
-
-#endif //AURORALOG_LOGGER_H
+#endif  // AURORALOG_LOGGER_H

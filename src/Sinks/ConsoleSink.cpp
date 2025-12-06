@@ -1,14 +1,10 @@
 #include <iostream>
-#include "AuroraLog/Sinks/ConsoleSink.h"
+#include "AuroraLog/Sink.h"
 
 namespace AuroraLog {
-    void ConsoleSink::log(LogEvent::Ptr event) {
-        if (event->getLevel() < m_level) {
-            return;
+    void ConsoleSink::log(const LogEvent& event) {
+        if (auto fmt = getFormatter()) {
+            std::cout << fmt->format(event); 
         }
-
-        std::cout << "[" << event->getTime() << "] "
-              << event->getContent()
-              << std::endl;
     }
 }

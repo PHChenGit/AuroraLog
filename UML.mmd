@@ -1,0 +1,97 @@
+classDiagram
+    class LogLevel {
+        <<enumeration>>
+        DEBUG
+        INFO
+        WARN
+        ERROR
+        FATAL
+    }
+
+    class LogEvent {
+        +struct~tm~ timestamp
+        +LogLevel level
+        +string thread_id
+        +string source_file
+        +int source_line
+        +string message
+        +LogEvent(level, file, line, msg)
+    }
+
+    class Logger {
+        -mutex logger_mutex
+        +static Logger& getInstance()
+        +void loadConfig(string configFilePth)
+        +void log(LogEvent event, string msg)
+        +void debug(string msg)
+        +void info(string msg)
+        +void warn(string msg)
+        +void error(string msg)
+        +void fatal(string msg)
+        -void notifyListeners(LogEvent event)
+    }
+
+    class Formatter {
+        <<interface>>
+        +string format(LogEvent event)*
+    }
+
+    class TextFormatter {
+        +string format(LogEvent event)
+        -string getISOTime(time_point t)
+    }
+
+    class JsonFormatter {
+        +string format(LogEvent event)
+        -string escapeJsonString(string input)
+    }
+
+    class LogSink {
+        <<abstract>>
+        #unique_ptr~Formatter~ formatter
+        #mutex sink_mutex
+        +void setFormatter(unique_ptr~Formatter~ fmt)
+        +void log(LogEvent event)*
+    }
+
+    class ConsoleSink {
+        +void log(LogEvent event)
+        -string getColorCode(LogLevel level)
+    }
+
+    class FileSink {
+        <<abstract>>
+        #ofstream file_stream
+        #filesystem::path file_path
+        +void log(LogEvent event)
+        #void open()
+        #void close()
+    }
+
+    class RollingFileSink {
+        -uintmax_t max_file_size
+        -int max_file_count
+        -string base_filename
+        -int current_serial_id
+        +RollingFileSink(string filename, size_t max_size, int max_count)
+        +void log(LogEvent event)
+        -void rotate()
+        -void compressLogs()
+        -bool shouldRotate()
+    }
+
+    class ConfigLoader {
+        +bool load(string path, Logger& logger)
+        -map~string, string~ parseYamlSimple(string content)
+    }
+
+    %% Relationships
+    Logger ..> LogEvent : Creates
+    Logger "1" o-- "*" LogSink : Has
+    LogSink "1" *-- "1" Formatter : Uses
+    LogSink <|-- ConsoleSink
+    LogSink <|-- FileSink
+    FileSink <|-- RollingFileSink
+    Formatter <|-- TextFormatter
+    Formatter <|-- JsonFormatter
+    LogEvent ..> LogLevel : Uses
