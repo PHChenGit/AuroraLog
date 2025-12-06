@@ -1,6 +1,7 @@
 #ifndef AURORALOG_CONFIGLOADER_H_
 #define AURORALOG_CONFIGLOADER_H_
 
+#include <vector>
 #include <memory>
 #include <string>
 #include <unordered_map>
@@ -12,8 +13,9 @@ struct LogConfig {
     /**
      * Minimuml logging level
      */
-    LogLevel level;
+    LogLevel level = LogLevel::INFO;
     
+    std::vector<std::string> sinks {"console"};
     
     std::string file_path;
     
@@ -27,6 +29,7 @@ struct LogConfig {
 
 class IConfigParser {
 public:
+    using Ptr = std::unique_ptr<IConfigParser>;
     virtual ~IConfigParser() = default;
     virtual LogConfig parse(const std::string& configPath) = 0;
 };
@@ -46,9 +49,6 @@ public:
     static LogConfig load(const std::string& configPath);
 
 private:
-    // 讀取檔案內容
-    static std::string readFile(const std::string& path);
-
     // 工廠方法：根據副檔名建立 Parser
     static std::unique_ptr<IConfigParser> createParser(const std::string& extension);
 };

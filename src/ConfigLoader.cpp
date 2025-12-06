@@ -18,31 +18,28 @@ LogConfig YamlConfigParser::parse(const std::string& configPath) {
     LogConfig logConfig;
     logConfig.level = logLevel;
     logConfig.format_type = format;
-    logConfig.
+    
+    return logConfig;
 };
 
-LogConfig JsonConfigParser::parse(const std::string& configPath) {};
+LogConfig JsonConfigParser::parse(const std::string& configPath) {
+    throw std::runtime_error("JsonConfigParser is not implemented yet.");
+};
 
 LogConfig ConfigLoader::load(const std::string& configPath) {
     std::filesystem::path p1(configPath);
-    IConfigParser parser = createParser(p1.extension());
-    LogConfig config = parser.parse();
+    auto parser = createParser(p1.extension().string());
+    LogConfig config = parser->parse(configPath);
+    return config;
 }
 
 std::unique_ptr<IConfigParser> ConfigLoader::createParser(const std::string& extension) {
-    switch (extension) {
-        case 'yaml':
-            YamlConfigParser ymlParser = new YamlConfigParser();
-            return ymlParser;
-            break;
-
-        case 'json':
-            JsonConfigParser jsonParser = new JsonConfigParser();
-            return jsonParser;
-            break;
-
-        default:
-            break;
+    if (extension == ".yaml" || extension == ".yml") {
+        return std::make_unique<YamlConfigParser>();
+    } else if (extension == ".json") {
+        return std::make_unique<JsonConfigParser>();
+    } else {
+        throw std::runtime_error("Unsupported config file format: " + extension);
     }
 }
 };  // namespace AuroraLog

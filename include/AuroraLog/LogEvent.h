@@ -28,6 +28,13 @@ namespace AuroraLog {
          m_level(level), m_file(file), m_line(line), m_threadId(threadId), m_fiberId(fiberId), m_time(timestamp), m_msg(msg) {};
     
         LogEvent(LogLevel level, const std::string& msg): m_level(level), m_msg(msg) {}
+        
+        void setLevel(LogLevel level);
+        void setFile();
+        void setLine(uint32_t line_number);
+        void setTime();
+        void setThreadId(uint32_t thread_id);
+        
         LogLevel getLevel() const { return m_level; }
         const std::string& getMessage() const { return m_msg; }
         const char* getFile() const { return m_file; }

@@ -16,26 +16,45 @@ void Logger::loadConfig(const std::string& configFilePath) {
     }
 }
 
+void Logger::applyConfig(const LogConfig& config) {
+    m_config = config;
+}
+
 Logger& Logger::getInstance() {
     static Logger instance;
     return instance;
 }
 
-void Logger::log(const LogEvent& event) {
-    if (event.getLevel() <= m_config.level) {
+void Logger::log(LogEvent::Ptr event) {
+    if (event->getLevel() <= m_config.level) {
         m_sink_manager.dispatch(event);
     }
 }
 
-void Logger::debug(const std::string& msg) { log(LogEvent(LogLevel::DEBUG, msg)); }
+void Logger::debug(const std::string& msg) { 
+    LogEvent::Ptr event = std::make_shared<LogEvent>(LogLevel::DEBUG, msg);
+    log(std::move(event));
+}
 
-void Logger::info(const std::string& msg) { log(LogEvent(LogLevel::INFO, msg)); }
+void Logger::info(const std::string& msg) { 
+    LogEvent::Ptr event = std::make_shared<LogEvent>(LogLevel::INFO, msg);
+    log(std::move(event));
+}
 
-void Logger::warn(const std::string& msg) { log(LogEvent(LogLevel::WARN, msg)); }
+void Logger::warn(const std::string& msg) { 
+    LogEvent::Ptr event = std::make_shared<LogEvent>(LogLevel::WARN, msg);
+    log(std::move(event));
+}
 
-void Logger::error(const std::string& msg) { log(LogEvent(LogLevel::ERROR, msg)); }
+void Logger::error(const std::string& msg) { 
+    LogEvent::Ptr event = std::make_shared<LogEvent>(LogLevel::ERROR, msg);
+    log(std::move(event));
+}
 
-void Logger::fatal(const std::string& msg) { log(LogEvent(LogLevel::FATAL, msg)); }
+void Logger::fatal(const std::string& msg) { 
+    LogEvent::Ptr event = std::make_shared<LogEvent>(LogLevel::FATAL, msg);
+    log(std::move(event));
+}
 
 void Logger::notifyListeners(const LogEvent::Ptr& event) {}
 }  // namespace AuroraLog

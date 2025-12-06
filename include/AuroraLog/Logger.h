@@ -20,9 +20,10 @@ public:
     Logger(LogConfig config);
 
     void loadConfig(const std::string& configFilePath);
+    void applyConfig(const LogConfig& config);
     static Logger& getInstance();
 
-    void log(const LogEvent& event);
+    void log(LogEvent::Ptr event);
     void debug(const std::string& msg);
     void info(const std::string& msg);
     void warn(const std::string& msg);

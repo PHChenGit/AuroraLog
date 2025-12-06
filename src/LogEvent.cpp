@@ -36,4 +36,24 @@ namespace AuroraLog {
             return LogLevel::UNKNOWN;
         }
     }
+
+    void LogEvent::setLevel(LogLevel level) {
+        m_level = level;
+    }
+
+    void LogEvent::setFile() {
+        
+    }
+
+    void LogEvent::setLine(uint32_t line_number) {
+
+    }
+
+    void LogEvent::setTime() {
+
+    }
+
+    void LogEvent::setThreadId(uint32_t thread_id) {
+        
+    }
 }

@@ -22,7 +22,7 @@ namespace AuroraLog {
          * @param event
          * @return
          */
-        std::string format(const LogEvent& event);
+        std::string format(LogEvent::Ptr event);
 
         void setMessage(const std::string& message);
 

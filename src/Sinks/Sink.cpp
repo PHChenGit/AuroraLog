@@ -9,7 +9,7 @@ namespace AuroraLog {
         return ;
     }
 
-    void SinkManager::dispatch(const LogEvent& event) {
+    void SinkManager::dispatch(LogEvent::Ptr event) {
         for (const auto& sink : m_sinks) {
             sink->log(event);
         }

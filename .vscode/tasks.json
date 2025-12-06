@@ -7,8 +7,9 @@
             "description": "選擇要編譯的目標 (Target)",
             "options": [
                 "all",
+                "AuroraLog",
                 "basic_usage",
-                "AuroraLog"
+                "config_usage"
             ],
             "default": "all"
         }
